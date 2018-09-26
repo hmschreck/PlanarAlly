@@ -5,6 +5,7 @@
             :class="{'modal-mask': mask, 'dialog-mask': !mask}"
             @click="close"
             v-show="visible"
+            @drop.prevent.stop="drop"
             @dragover.prevent='dragOver'
         >
             <div
@@ -62,11 +63,14 @@ export default Vue.extend({
             // Because the drag event is happening on the header, we have to change the drag image
             // in order to give the impression that the entire modal is dragged.
             event.dataTransfer.setDragImage(<Element>this.$refs.container, event.offsetX, event.offsetY);
+            event.dataTransfer.setData("text/plain", "");
             this.offsetX = event.offsetX;
             this.offsetY = event.offsetY;
             this.dragging = true;
         },
         dragEnd(event: DragEvent) {
+            event.preventDefault();
+            event.stopPropagation();
             this.dragging = false;
             let left = event.clientX - this.offsetX;
             let top = event.clientY - this.offsetY;
@@ -80,6 +84,11 @@ export default Vue.extend({
         },
         dragOver(event: DragEvent) {
             if (this.dragging) (<any>this.$refs.container).style.display = "none";
+        },
+        drop(event: DragEvent) {
+            event.preventDefault();
+            event.stopPropagation();
+            console.log("waa");
         },
     },
 });

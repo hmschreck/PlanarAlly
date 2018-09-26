@@ -6,7 +6,7 @@
             slot-scope='m'
             draggable="true"
             @dragstart="m.dragStart"
-            @dragend="m.dragEnd"
+            @dragend.prevent.stop="m.dragEnd"
         >
             <div>Initiative</div>
             <div class='header-close' @click="visible = false"><i class="far fa-window-close"></i></div>
