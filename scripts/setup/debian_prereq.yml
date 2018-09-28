@@ -1,0 +1,10 @@
+---
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+    state: installed
+  become: yes
+  with_items:
+    - git
+    - python3-pip
+    - nodejs

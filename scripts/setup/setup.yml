@@ -1,0 +1,29 @@
+---
+- hosts: all
+  vars:
+    git_branch: "master"
+    git_repo: "https://github.com/Kruptein/PlanarAlly.git"
+    clone_dir: "PlanarAlly"
+  tasks:
+    - name: Install prerequisites
+      import_tasks: "debian_prereq.yml"
+      when: ansible_os_family == "Debian"
+
+    - name: Install prerequisites
+      import_tasks: "redhat_prereq.yml"
+      when: ansible_os_family == "Red Hat"
+
+    - name: Install prerequisites
+      import_tasks: "macos_prereq.yml"
+      when: ansible_os_family == "Darwin"
+
+
+    - name: Clone git repo
+      git:
+        repo: "{{ git_repo }}"
+        dest: "{{ clone_dir }}"
+        version: "{{ git_branch }}"
+
+    - name: Install pip packages
+      pip:
+        requirements: "{{ clone_dir }}/requirements.txt"
